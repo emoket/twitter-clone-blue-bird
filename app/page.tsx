@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import AuthButtonServer from './auth-button-server';
 import NewTweet from './new-tweet';
 import Likes from './likes';
+import Tweets from './tweets';
 
 export default async function Home() {
   // 인증되지 않은 사용자를 로그인 페이지로 리디렉션 시키기 위해 트윗 목록을 받아 오기 전에 리디렉션 로직을 추가합니다.
@@ -22,7 +23,8 @@ export default async function Home() {
   const tweets =
     data?.map((tweet) => ({
       ...tweet,
-      user_has_liked_tweet: tweet.likes.find(
+      author: Array.isArray(tweet.author) ? tweet.author.at(0) : tweet.author,
+      user_has_liked_tweet: !!tweet.likes.find(
         (like) => like.user_id === session.user.id
       ),
       likes: tweet.likes.length,
@@ -32,15 +34,7 @@ export default async function Home() {
     <>
       <AuthButtonServer />
       <NewTweet />
-      {tweets?.map((tweet) => (
-        <div key={tweet.id}>
-          <p>
-            {tweet.author?.name} {tweet.author?.username}
-          </p>
-          <p>{tweet.title}</p>
-          <Likes tweet={tweet} />
-        </div>
-      ))}
+      <Tweets tweets={tweets} />
     </>
   );
 }
