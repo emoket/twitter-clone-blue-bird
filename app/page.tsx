@@ -2,6 +2,8 @@ import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import AuthButtonServer from './auth-button-server';
+import NewTweet from './new-tweet';
+import Likes from './likes';
 
 export default async function Home() {
   // 인증되지 않은 사용자를 로그인 페이지로 리디렉션 시키기 위해 트윗 목록을 받아 오기 전에 리디렉션 로직을 추가합니다.
@@ -13,12 +15,32 @@ export default async function Home() {
 
   if (!session) redirect('/login');
 
-  const { data: tweets } = await supabase.from('tweets').select();
+  const { data } = await supabase
+    .from('tweets')
+    .select('*, author: profiles(*), likes(user_id)');
+
+  const tweets =
+    data?.map((tweet) => ({
+      ...tweet,
+      user_has_liked_tweet: tweet.likes.find(
+        (like) => like.user_id === session.user.id
+      ),
+      likes: tweet.likes.length,
+    })) ?? [];
 
   return (
     <>
       <AuthButtonServer />
-      <pre>{JSON.stringify(tweets, null, 2)}</pre>
+      <NewTweet />
+      {tweets?.map((tweet) => (
+        <div key={tweet.id}>
+          <p>
+            {tweet.author?.name} {tweet.author?.username}
+          </p>
+          <p>{tweet.title}</p>
+          <Likes tweet={tweet} />
+        </div>
+      ))}
     </>
   );
 }
