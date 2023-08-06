@@ -1,3 +1,10 @@
+supabase 프로젝트를 기준으로 Types를 생성할 때 아래의 커맨드를 이용하면 수월하다.
+
+```bash
+twitter-clone-blue-bird on  main [!?] is 📦 v0.1.0 via ⬢ v18.16.0
+➜ npx supabase gen types typescript --project-id vbhzzjxnizglowduscfg > lib/database.types.ts
+```
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
