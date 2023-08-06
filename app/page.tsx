@@ -1,7 +1,7 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
-import AuthButtonServer from './auth-button-server';
 import { redirect } from 'next/navigation';
+import AuthButtonServer from './auth-button-server';
 
 export default async function Home() {
   // 인증되지 않은 사용자를 로그인 페이지로 리디렉션 시키기 위해 트윗 목록을 받아 오기 전에 리디렉션 로직을 추가합니다.
