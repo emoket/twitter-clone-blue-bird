@@ -3,7 +3,6 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import AuthButtonServer from './auth-button-server';
 import NewTweet from './new-tweet';
-import Likes from './likes';
 import Tweets from './tweets';
 
 export default async function Home() {
@@ -34,7 +33,7 @@ export default async function Home() {
   return (
     <div className='w-full max-w-xl mx-auto'>
       <div className='flex justify-between px-4 py-6 border border-t-0 border-gray-800'>
-        <h1 className='text-xl font-bold'>Home</h1>
+        <h1 className='px-4 py-2 text-xl font-semibold text-white'>Home</h1>
         <AuthButtonServer />
       </div>
       <NewTweet user={session.user} />
